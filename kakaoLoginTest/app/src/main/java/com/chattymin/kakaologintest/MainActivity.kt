@@ -3,16 +3,21 @@ package com.chattymin.kakaologintest
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.flowWithLifecycle
 import com.chattymin.kakaologintest.databinding.ActivityMainBinding
 import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.user.UserApiClient
+import kotlinx.coroutines.flow.onEach
 
 class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-
+    private val mainViewModel: MainViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        binding.etOnboardingProfileSettingName.setError("error")
 
         KakaoSdk.init(this, BuildConfig.APP_KEY)
         UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
@@ -36,5 +41,23 @@ class MainActivity : AppCompatActivity() {
         }
 
         setContentView(binding.root)
+    }
+
+    private fun observeKakaoUserDataState() {
+        mainViewModel.getKakaoDataState.flowWithLifecycle(lifecycle).onEach { state ->
+            when (state) {
+                is UiState.Success -> {
+                    // startSocialSyncActivity(state.data)
+                }
+
+                is UiState.Failure -> {
+                    // yelloSnackbar(binding.root, getString(R.string.msg_error))
+                }
+
+                is UiState.Empty -> {}
+
+                is UiState.Loading -> {}
+            }
+        }
     }
 }

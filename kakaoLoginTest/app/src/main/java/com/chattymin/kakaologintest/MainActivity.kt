@@ -3,6 +3,7 @@ package com.chattymin.kakaologintest
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
+import android.widget.ProgressBar
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.flowWithLifecycle
@@ -41,6 +42,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         setContentView(binding.root)
+
+        test()
+    }
+
+    private fun test() {
+        val progress = findViewById<ProgressBar>(R.id.progress)
+        progress.setProgress(50) // range 0-100
     }
 
     private fun observeKakaoUserDataState() {

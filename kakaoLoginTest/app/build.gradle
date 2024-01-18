@@ -56,4 +56,7 @@ dependencies {
 
     // Kakao Login
     implementation 'com.kakao.sdk:v2-user:2.10.0'
+
+    // progressbar
+    implementation 'io.github.farimarwat:simpleprogressbar:1.1'
 }
